@@ -12,6 +12,17 @@ export default {
       hover_secondary: 'rgb(52 211 153)',
       white: '#fff',
     },
+    screens: {
+      xs: '320px',
+      sm: '480px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
+      '2xl': '1600px',
+      '3xl': '1920px',
+      '4xl': '2196px',
+      '5xl': '2560px',
+    },
   },
   plugins: [],
 }
