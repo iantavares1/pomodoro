@@ -1,111 +1,67 @@
-import { useEffect, useState } from 'react'
+import { usePomodoro } from './hooks/usePomodoro'
 
 import { Button } from './components/Button'
-
-const WORK_SECONDS = 30 * 60
-const REST_SECONDS = 5 * 60
+import { Timer } from './components/Timer'
 
 function App() {
-  const [isWorking, setIsWorking] = useState(true)
-  const [isPaused, setIsPaused] = useState(true)
-
-  const [seconds, setSeconds] = useState(WORK_SECONDS)
-
-  const [totalTime, setTotalTime] = useState(0)
-  const [workingTime, setWorkingTime] = useState(0)
-  const [cyclesCounter, setCyclesCounter] = useState(0)
-
-  const handleIsWorking = (boolean: boolean) => {
-    setIsWorking(boolean)
-    setSeconds(boolean ? WORK_SECONDS : REST_SECONDS)
-  }
-
-  const handleIsPaused = (boolean?: boolean) =>
-    setIsPaused((previous) => boolean || !previous)
-
-  useEffect(() => {
-    if (seconds === 0) {
-      if (isWorking) {
-        handleIsWorking(false)
-      } else {
-        handleIsWorking(true)
-      }
-    }
-    if (!isPaused) {
-      const interval = setInterval(() => {
-        setSeconds((previous) => previous - 1)
-        setTotalTime((previous) => previous + 1)
-        if (isWorking) setWorkingTime((previous) => previous + 1)
-      }, 1000)
-
-      return () => clearInterval(interval)
-    }
-  }, [seconds, isWorking, isPaused])
-
-  useEffect(() => {
-    totalTime % (WORK_SECONDS + REST_SECONDS) === 0 &&
-      setCyclesCounter((previous) => (totalTime > 0 ? previous + 1 : previous))
-  }, [totalTime])
+  const {
+    isWorking,
+    isPaused,
+    seconds,
+    workingTime,
+    cyclesCounter,
+    bgColor,
+    handleIsPaused,
+    handleIsWorking,
+  } = usePomodoro()
 
   return (
-    <div className="bg-secondary p-28 h-screen font-fira_code">
-      <div className="bg-white w-fit px-8 py-12 m-auto rounded-xl shadow-2xl flex flex-col gap-12 items-center">
-        <h1 className="text-4xl font-medium">
+    <div
+      className={`bg-${bgColor} h-screen font-fira_code md:pt-12 lg:pt-16 2xl:pt-24 4xl:pt-48 5xl:pt-[360px]`}
+    >
+      <div
+        className={`bg-${bgColor} w-full h-full pt-12 pb-8 px-2 xs:px-8 flex flex-col justify-between items-center text-white
+         md:bg-white md:w-3/4 md:m-auto md:h-3/4 md:text-black md:rounded-2xl  md:shadow-2xl 
+         2xl:h-5/6 2xl:gap-0 2xl:p-20
+         3xl:w-2/5 3xl:h-5/6
+         4xl:scale-125
+         5xl:scale-150`}
+      >
+        <h1 className="text-4xl font-medium xl:text-6xl">
           {isWorking ? 'Working' : 'Resting'}
         </h1>
-        <span className="text-9xl">
-          <span>{String(Math.floor(seconds / 60)).padStart(2, '0')}</span>
-          <span>:</span>
-          <span>{String(seconds % 60).padStart(2, '0')}</span>
+        <span className="text-6xl xs:text-7xl sm:text-8xl md:text-9xl xl:text-[160px]">
+          <Timer seconds={seconds} />
         </span>
-        <span className="px-12 flex gap-32 text-lg">
+
+        <span className="p-4 grid grid-cols-2 grid-c gap-4 text-lg xs:flex xs:justify-around md:w-full ">
+          <span className="col-span-2 flex justify-center">
+            <Button color={bgColor} onClick={() => handleIsPaused()}>
+              {isPaused ? 'Play' : 'Pause'}
+            </Button>
+          </span>
+
           <Button
+            color={bgColor}
             onClick={() => {
               handleIsWorking(true)
-              setIsPaused(true)
             }}
           >
             Work
           </Button>
           <Button
+            color={bgColor}
             onClick={() => {
               handleIsWorking(false)
-              setIsPaused(true)
             }}
           >
             Rest
           </Button>
-          <Button onClick={() => handleIsPaused()}>
-            {isPaused ? 'Play' : 'Pause'}
-          </Button>
         </span>
-        <span className="w-full flex flex-col gap-2 text-xl">
+        <span className="w-full flex flex-col gap-2 text-xl xl:text-2xl">
           <span>Cycles: {Math.floor(cyclesCounter)}</span>
           <span>
-            <span>Working Time: </span>
-            {Math.floor(workingTime / 60) < 60 && (
-              <>
-                <span>
-                  {String(Math.floor(workingTime / 60)).padStart(2, '0')}
-                </span>
-                :<span>{String(workingTime % 60).padStart(2, '0')}</span>
-              </>
-            )}
-            {Math.floor(workingTime / 60) >= 60 && (
-              <>
-                <span>
-                  {String(Math.floor(workingTime / 3600)).padStart(2, '0')}
-                </span>
-                :
-                <span>
-                  {String(Math.floor((workingTime % 3600) / 60)).padStart(
-                    2,
-                    '0',
-                  )}
-                </span>
-                :<span>{String(workingTime % 60).padStart(2, '0')}</span>
-              </>
-            )}
+            Working Time: <Timer seconds={workingTime} />
           </span>
         </span>
       </div>
