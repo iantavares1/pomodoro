@@ -13,7 +13,7 @@ export const usePomodoro = () => {
   const [workingTime, setWorkingTime] = useState(0)
   const [cyclesCounter, setCyclesCounter] = useState(0)
 
-  const [bgColor, setBgColor] = useState<'secondary' | 'primary'>()
+  const [color, setColor] = useState<'primary' | 'secondary'>()
 
   const handleIsWorking = (boolean: boolean) => {
     if (boolean !== isWorking) {
@@ -51,7 +51,7 @@ export const usePomodoro = () => {
   }, [totalTime])
 
   useEffect(() => {
-    setBgColor(isWorking ? 'primary' : 'secondary')
+    setColor(isWorking ? 'primary' : 'secondary')
   }, [isWorking])
 
   return {
@@ -60,7 +60,7 @@ export const usePomodoro = () => {
     seconds,
     workingTime,
     cyclesCounter,
-    bgColor,
+    color,
     handleIsPaused,
     handleIsWorking,
   }
