@@ -22,8 +22,9 @@ function App() {
       className={`${bgColor} h-screen font-fira_code md:pt-12 lg:pt-16 2xl:pt-24 4xl:pt-48 5xl:pt-[360px]`}
     >
       <div
-        className={`${bgColor} w-full h-full pt-12 pb-8 px-2 xs:px-8 flex flex-col justify-between items-center text-white
-         md:bg-white md:w-3/4 md:m-auto md:h-3/4 md:text-black md:rounded-2xl  md:shadow-2xl 
+        className={`${bgColor} w-full h-full pt-12 pb-16 px-2 flex flex-col justify-between items-center text-white
+         xs:px-8
+         md:bg-white md:w-3/4 md:m-auto md:h-3/4 md:text-black md:rounded-2xl md:shadow-2xl 
          2xl:h-5/6 2xl:gap-0 2xl:p-20
          3xl:w-2/5 3xl:h-5/6
          4xl:scale-125
